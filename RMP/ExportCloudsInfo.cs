@@ -156,7 +156,7 @@ namespace RMP
 
                                                  allClouds.Count, allClouds.Count - cloudsOnSheets, result.ToString());
 
-            myDialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink4, "Open Log File", "");
+            myDialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink4, $"Open Log File {outputFile}", "");
 
             TaskDialogResult res = myDialog.Show();
 
@@ -168,7 +168,7 @@ namespace RMP
 
                   new System.Diagnostics.Process();
 
-                process.StartInfo.FileName = @"C:\Temp\report.csv";
+                process.StartInfo.FileName = outputFile;
 
                 process.Start();
 

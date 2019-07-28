@@ -22,6 +22,27 @@ namespace RMP
             Application app = uiapp.Application;
             Document doc = uidoc.Document;
 
+
+
+
+            string outputFile = @"C:\Temp\reportOverrides.csv";
+
+            try
+            {
+                File.WriteAllText(outputFile,
+                    "Revision Cloud Id," +
+                    "Type,"+
+                    "View Name,"+
+                  "Hidden," +
+                  "Error"+ Environment.NewLine
+                 );
+            }
+            catch
+            {
+                TaskDialog.Show("Error", "Opertion cancelled. Please close the log file.");
+                return Result.Failed;
+            }
+
             List<BuiltInCategory> builtInFilter = new List<BuiltInCategory>();
 
             builtInFilter.Add(BuiltInCategory.OST_RevisionClouds);
@@ -47,11 +68,17 @@ namespace RMP
 
             List<View> viewToCheck = new List<View>();
 
+            int totalRevClouds = fec.Count;
+
+            int revisionCloudChanged = 0;
+            int cloudsCategoryChanged = 0;
+            int cloudsTagsCategoryChanged = 0;
+
             using (Transaction t = new Transaction(doc, "Reset revision cloud color"))
             {
                 t.Start();
 
-                foreach (Element rev in fec)
+                foreach (Element rev in fec) //clouds + tags
                 {
                     try
                     {
@@ -61,32 +88,74 @@ namespace RMP
                         if (!rev.IsHidden(v))
                         {
                             v.SetElementOverrides(rev.Id, og);
-                            v.SetCategoryOverrides(revCloudsCategory.Id, og);
-                            v.SetCategoryOverrides(revCloudTagsCategory.Id, og);
-                        }
-                        else
-                        {
-                            sb.AppendLine(v.Name + "has hidden clouds");
-                        }
+                            revisionCloudChanged += 1;
+                            
+                            if (rev.Category.Name == "Revision Clouds")
+                            {
+                                v.SetCategoryOverrides(revCloudsCategory.Id, og);
+                                cloudsCategoryChanged += 1;
+                            }
 
-                        if (!p.AsValueString().Contains("Sheet"))
-                        {
-                            viewToCheck.Add(v);
-                            sb.AppendLine(v.Name);
-                        }
+                            if (rev.Category.Name == "Revision Clouds Tags")
+                            {
+                                v.SetCategoryOverrides(revCloudTagsCategory.Id, og);
+                                cloudsTagsCategoryChanged += 1;
+                            }
+                        }                       
+                        //sb.AppendLine($"{rev.Id}," +
+                        //                $"{rev.Category.Name}," +
+                        //                $"{v.Name}," +
+                        //                $"{rev.IsHidden(v)}," +
+                        //                $"Success");
+                        
+                        //if (!p.AsValueString().Contains("Sheet"))
+                        //{
+                        //    viewToCheck.Add(v);
+                        //    sb.AppendLine($"{v.Name}");
+                        //}
 
                     }
                     catch (Exception ex)
                     {
+                        string mess = ex.Message;
+                        string[] newMessage = mess.Split('\n');
 
-                        sb.AppendLine("Error: ElementId " + rev.Id.ToString() + Environment.NewLine + ex.Message);
+                        sb.AppendLine($"{rev.Id}," +
+                                        $"{rev.Category.Name}," +
+                                       $"N/A," +
+                                       $"N/A," +
+                                       $"cio");
                     }
                 }
 
                 t.Commit();
             }
 
-            TaskDialog.Show("result", sb.ToString());
+            File.AppendAllText(outputFile, sb.ToString());
+
+            TaskDialog myDialog = new TaskDialog("Summary");
+            myDialog.MainIcon = TaskDialogIcon.TaskDialogIconWarning;
+            
+            myDialog.MainContent = $"Total Revision Cloud {totalRevClouds}\n" +
+                                    $"Rev Clouds changed: {revisionCloudChanged}\n" +
+                                    $"Rev Clouds Category changed: {cloudsCategoryChanged}\n" +
+                                    $"Rev Clouds Tags Category changed: {cloudsTagsCategoryChanged}";
+
+            myDialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink4, $"Open Log File {outputFile}", "");
+
+            TaskDialogResult res = myDialog.Show();
+
+            if (TaskDialogResult.CommandLink4 == res)
+            {
+                System.Diagnostics.Process process =
+
+                new System.Diagnostics.Process();
+
+                process.StartInfo.FileName = outputFile;
+
+                process.Start();
+
+            }
 
             return Result.Succeeded;
         }
