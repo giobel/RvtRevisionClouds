@@ -80,10 +80,11 @@ namespace RMP
 
                 foreach (Element rev in fec) //clouds + tags
                 {
+                    View v = doc.GetElement(rev.OwnerViewId) as View;
                     try
                     {
                         Parameter p = rev.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM);
-                        View v = doc.GetElement(rev.OwnerViewId) as View;
+                        //View v = doc.GetElement(rev.OwnerViewId) as View;
 
                         if (!rev.IsHidden(v))
                         {
@@ -117,14 +118,19 @@ namespace RMP
                     }
                     catch (Exception ex)
                     {
-                        string mess = ex.Message;
-                        string[] newMessage = mess.Split('\n');
+
+                        string str = ex.Message;
+                        str = str.Replace("\n", String.Empty);
+                        str = str.Replace("\r", String.Empty);
+                        str = str.Replace("\t", String.Empty);
+
+                        string viewName = v.Name.Replace(',','-');
 
                         sb.AppendLine($"{rev.Id}," +
                                         $"{rev.Category.Name}," +
+                                       $"{viewName}," +
                                        $"N/A," +
-                                       $"N/A," +
-                                       $"cio");
+                                       $"{str}");
                     }
                 }
 
