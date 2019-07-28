@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Text>Command RMP</Text>
+    <Description>Some description for RMP</Description>
+    <Assembly>RMP.dll</Assembly>
+    <FullClassName>RMP.Command</FullClassName>
+    <ClientId>811a0dbf-9697-4f3c-9253-09d711adf99a</ClientId>
+    <VendorId>com.typepad.thebuildingcoder</VendorId>
+    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+  </AddIn>
+  <AddIn Type="Application">
+    <Name>Application RMP</Name>
+    <Assembly>RMP.dll</Assembly>
+    <FullClassName>RMP.App</FullClassName>
+    <ClientId>b0f5d94f-9018-4896-ab3c-124c073ad584</ClientId>
+    <VendorId>com.typepad.thebuildingcoder</VendorId>
+    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+  </AddIn>
+</RevitAddIns>
