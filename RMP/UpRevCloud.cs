@@ -30,8 +30,10 @@ namespace RMP
 
             ElementMulticategoryFilter filterRevision = new ElementMulticategoryFilter(builtInFilter);
 
-            ICollection<Element> fec = new FilteredElementCollector(doc).WherePasses(filterRevision).WhereElementIsNotElementType().ToElements();
-            
+            //ICollection<Element> fec = new FilteredElementCollector(doc).WherePasses(filterRevision).WhereElementIsNotElementType().ToElements();
+
+            ICollection<ElementId> fec = uidoc.Selection.GetElementIds();
+
             string outputFile = @"C:\Temp\reportUprev.csv";
 
             StringBuilder sb = new StringBuilder();
@@ -65,8 +67,9 @@ namespace RMP
             {
                 t.Start();
 
-                foreach (Element rev in fec)
+                foreach (ElementId revId in fec)
                 {
+                    Element rev = doc.GetElement(revId);
                     View v = doc.GetElement(rev.OwnerViewId) as View;
                     string fixedName = v.Name.Replace(',', '-');
                     string currentRevision = "N/A";
@@ -101,11 +104,20 @@ namespace RMP
 
                                 if (currentRevision != null)
                                 {
-                                    int last = Int32.Parse(sheetRevision.AsString()) + 1; //sheet revision, not cloud revision
+                                    int last = Int32.Parse(sheetRevision.AsString()); //sheet revision, not cloud revision
                                     revision.Set("00" + last.ToString());
                                     version.Set("01");
                                 }
                                 changedClouds += 1;
+                                sb.AppendLine(String.Format("{0},{1},{2},{3},{4},{5},{6}",
+                                                      sheetNumber,
+                                                      fixedName,
+                                                      sheetRevision.AsString(),
+                                                      rev.Id,
+                                                      rev.IsHidden(v),
+                                                      rev.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsString(),
+                                                      "No"
+                                                      ));
                             }
                         }
                         else
@@ -151,9 +163,8 @@ namespace RMP
 
             TaskDialog myDialog = new TaskDialog("Summary");
             myDialog.MainIcon = TaskDialogIcon.TaskDialogIconNone;
-            myDialog.MainContent = String.Format("Rev Clouds: {0} \nClouds not on sheets: {1}\nClouds hidden (not uprev): {2} \nErrors: {3}",
-
-                                                 fec.Count, cloudsNotOnSheet, hiddenClouds, errors);
+            //myDialog.MainContent = String.Format("Rev Clouds: {0} \nClouds not on sheets: {1}\nClouds hidden (not uprev): {2} \nErrors: {3}", fec.Count, cloudsNotOnSheet, hiddenClouds, errors);
+            myDialog.MainContent = String.Format("Rev Clouds updated: {0}", fec.Count);
 
             myDialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink4, $"Open Log File {outputFile}", "");
 

@@ -28,7 +28,7 @@ namespace RMP
                 
                 AddPushButton(tools, "btnResetOverrides", "Remove All Clouds \nColor Overrides", "", "pack://application:,,,/RMP;component/Images/Reset.png", "RMP.ResetOverrides", "Remove the color overrides from revision clouds and their tags.");
 
-                AddPushButton(tools, "btnUpRevCloud", "Up-rev All \nRevision Clouds", "", "pack://application:,,,/RMP;component/Images/Uprev.png", "RMP.UpRevCloud", "Update the Revision Cloud to the next Revision");
+                AddPushButton(tools, "btnUpRevCloud", "Up-rev Selected \nRevision Clouds", "", "pack://application:,,,/RMP;component/Images/Uprev.png", "RMP.UpRevCloud", "Update the Revision Cloud to the next Revision");
             }
             catch
             {
