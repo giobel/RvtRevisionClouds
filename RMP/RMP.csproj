@@ -74,7 +74,7 @@
     <Resource Include="Images\Reset.png" />
     <Resource Include="Images\Select.png" />
     <Resource Include="Images\Uprev.png" />
-    <Resource Include="Images\Filter.ico" />
+    <Resource Include="Images\Filter.png" />
     <Content Include="RMP.addin">
       <SubType>Designer</SubType>
     </Content>

@@ -32,5 +32,10 @@ namespace RMP
 
 
         }
+
+        private void buttonUpdate_Click(object sender, System.EventArgs e)
+        {
+            Autodesk.Revit.UI.TaskDialog.Show("Warning", "Command not implemented yet");
+        }
     }
 }

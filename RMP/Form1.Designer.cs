@@ -60,17 +60,17 @@
             this.cBoxValues.Location = new System.Drawing.Point(12, 86);
             this.cBoxValues.Name = "cBoxValues";
             this.cBoxValues.Size = new System.Drawing.Size(314, 21);
-            this.cBoxValues.Sorted = true;
             this.cBoxValues.TabIndex = 4;
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(69, 136);
+            this.buttonUpdate.Location = new System.Drawing.Point(80, 128);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(177, 28);
             this.buttonUpdate.TabIndex = 5;
             this.buttonUpdate.Text = "Up-rev Revision Clouds";
             this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
             // label2
             // 
