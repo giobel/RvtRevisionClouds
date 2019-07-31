@@ -112,7 +112,7 @@ namespace RMP
 
                         string fixedName = sheetView.Name.Replace(',', '-');
 
-                        sb.AppendLine(String.Format("{0},{1},{2},{3},{4},{5},{6}",
+                        sb.AppendLine(String.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}",
                                                   sheetView.SheetNumber,
                                                   fixedName,
                                                   sheetRevision.AsString(),
@@ -134,6 +134,8 @@ namespace RMP
                                                   "N/A",
                                                   rev.Id,
                                                   rev.IsHidden(currentView),
+                                                  "N/A",
+                                                  "N/A",
                                                   revision.AsString(),
                                                   version.AsString()));
 

@@ -59,12 +59,16 @@
     <Compile Include="UpRevCloud.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\Export.png" />
+    <Resource Include="Images\Reset.png" />
+    <Resource Include="Images\Select.png" />
+    <Resource Include="Images\Uprev.png" />
     <Content Include="RMP.addin" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy "$(ProjectDir)bin\debug\*.dll" "$(AppData)\Autodesk\Revit\Addins\2014"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
